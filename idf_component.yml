@@ -1,0 +1,12 @@
+version: 1.0.0
+maintainers:
+  - tomstewart89
+  - Sebastian Koczur <themechanos@gmail.com>
+tags:
+  - Memory
+  - Vector
+
+description: >-
+  Simple Vector Lib ESP-IDF
+
+repository: "https://github.com/TheMechanos/SKVector"
