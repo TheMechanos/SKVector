@@ -1,6 +1,5 @@
-version: 1.0.2
+version: 1.0.3
 maintainers:
-  - tomstewart89
   - Sebastian Koczur <themechanos@gmail.com>
 tags:
   - Memory

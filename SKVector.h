@@ -6,31 +6,7 @@
 
 #ifdef __cplusplus
 
-template <typename T> class VectorIterator {
-public:
-    VectorIterator(T* values_ptr)
-        : values_ptr_ { values_ptr }
-        , position_ { 0 } { }
-
-    VectorIterator(T* values_ptr, size_t size)
-        : values_ptr_ { values_ptr }
-        , position_ { size } { }
-
-    bool operator!=(const VectorIterator<T>& other) const { return !(*this == other); }
-
-    bool operator==(const VectorIterator<T>& other) const { return position_ == other.position_; }
-
-    VectorIterator& operator++() {
-        ++position_;
-        return *this;
-    }
-
-    T& operator*() const { return *(values_ptr_ + position_); }
-
-private:
-    T* values_ptr_;
-    size_t position_;
-};
+namespace SK {
 
 template <typename T> class Vector {
 public:
@@ -47,24 +23,18 @@ public:
         values_ = new T[max_size];
     }
 
-    Vector(size_t max_size, const T* value)
-        : Vector(max_size) {
-        assign(max_size, value);
+    Vector(const Vector& other)
+        : Vector(other.max_size_) {
+
+        this->assign(other.size(), other);
     }
+
+
+    // GETTERS FUNCTIONS ------------------------------------------------------------------------------------
 
     const T& operator[](size_t index) const { return values_[index]; }
 
     T& operator[](size_t index) { return values_[index]; }
-
-    Vector<T>& operator=(const Vector<T>& neww){
-        if(this == &neww)
-            return *this;
-
-        this->clear();
-        this->assign(neww.size(), neww);
-
-        return *this;
-    }
 
     const T& at(size_t index) const { return values_[index]; }
 
@@ -74,13 +44,31 @@ public:
 
     T& back() { return values_[size_ - 1]; }
 
-    void clear() { size_ = 0; }
+
+
+
+    // FILL FUNCTIONS ----------------------------------------------------------------------------------------
 
     template <typename U> void fill(const U& value) { assign(max_size_, value); }
 
     template <typename U, size_t N> void fill(const U (&values)[N]) { assign(N, values); }
 
     template <typename U> void fill(const Vector<U>& values) { assign(values.size(), values); }
+
+
+
+
+    // ASSIGN FUNCTIONS -------------------------------------------------------------------------------------
+
+    Vector<T>& operator=(const Vector<T>& neww) {
+        if (this == &neww)
+            return *this;
+
+        this->clear();
+        this->assign(neww.size(), neww);
+
+        return *this;
+    }
 
     template <typename U> void assign(size_t n, const U& value) {
         size_t assign_size = ((n < max_size_) ? n : max_size_);
@@ -116,6 +104,11 @@ public:
         }
     }
 
+
+
+
+    // FILL FUNCTIONS ----------------------------------------------------------------------------------------
+
     void push_back(const T& value) {
         if ((values_ != NULL) && (size_ < max_size_)) {
             values_[size_++] = value;
@@ -128,6 +121,46 @@ public:
         }
     }
 
+    bool pop_back(T& out) {
+        if (size_ > 0) {
+            out = back();
+            --size_;
+            return true;
+        }
+        return false;
+    }
+
+
+    void push_front(const T& value) {
+        if ((values_ != NULL) && (size_ < max_size_)) {
+            for (size_t i = size_; i > 0; --i)
+                values_[i] = values_[i - 1];
+            values_[0] = value;
+            ++size_;
+        }
+    }
+
+    void pop_front() {
+        if (size_ > 0) {
+            for (size_t i = 0; i < size_ - 1; ++i)
+                values_[i] = values_[i + 1];
+            --size_;
+        }
+    }
+
+    bool pop_front(T& out) {
+        if (size_ > 0) {
+            out = values_[0];
+            pop_front();
+            return true;
+        }
+        return false;
+    }
+
+    // CLEARING FUNCTIONS ---------------------------------------------------------------------------------------
+
+    void clear() { size_ = 0; }
+
     void remove(size_t index) {
         if (size_ > index) {
             for (size_t i = index; i < (size_ - 1); ++i) {
@@ -137,32 +170,48 @@ public:
         }
     }
 
+    bool removeValue(const T& data) {
+        for (size_t i = 0; i < size_; ++i) {
+            if (values_[i] == data) {
+                remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+
+    // SIZE FUNCTIONS ---------------------------------------------------------------------------------------
+
     size_t size() const { return size_; }
 
     size_t max_size() const { return max_size_; }
+
+
+
+
+    // CHECK FUNCTIONS --------------------------------------------------------------------------------------
 
     bool empty() const { return size_ == 0; }
 
     bool full() const { return size_ == max_size_; }
 
+
+
+    // ACCESS TO BUFFER -------------------------------------------------------------------------------------
+
     T* data() { return values_; }
 
     const T* data() const { return values_; }
-
-    typedef VectorIterator<T> iterator;
-    iterator begin() { return iterator(values_); }
-
-    iterator end() { return iterator(values_, size_); }
-
-    typedef VectorIterator<const T> const_iterator;
-    const_iterator begin() const { return const_iterator(values_); }
-
-    const_iterator end() const { return const_iterator(values_, size_); }
 
 private:
     T* values_;
     size_t max_size_;
     size_t size_;
 };
+
+}
 
 #endif
