@@ -1,4 +1,4 @@
-version: 1.0.3
+version: 1.0.4
 maintainers:
   - Sebastian Koczur <themechanos@gmail.com>
 tags:
@@ -6,6 +6,6 @@ tags:
   - Vector
 
 description: >-
-  Simple Vector Lib ESP-IDF
+  Simple Vector Lib
 
 repository: "https://github.com/TheMechanos/SKVector"
