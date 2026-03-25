@@ -1,0 +1,18 @@
+{
+    "name": "SKVector",
+    "version": "1.0.0",
+    "description": "Simple Vector Lib",
+    "keywords": "vector, data, managment",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/TheMechanos/SKVector.git"
+    },
+    "authors": [
+        {
+            "name": "Sebastian Koczur",
+            "email": "themechanos@gmail.com"
+        }
+    ],
+    "frameworks": "arduino, espidf",
+    "platforms": "*"
+}

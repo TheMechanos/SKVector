@@ -1,0 +1,11 @@
+version: 1.0.0
+maintainers:
+  - Sebastian Koczur <themechanos@gmail.com>
+tags:
+  - Memory
+  - Vector
+
+description: >-
+  Simple Vector Lib
+
+repository: "https://github.com/TheMechanos/SKVector"
